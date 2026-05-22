@@ -2,21 +2,21 @@ import type { CtaContent, CtaIntent } from "@/types/cta";
 
 export const businessContact = {
   businessName: "TP Electro",
-  whatsappNumber: "27676997547",
-  whatsappDisplay: "+27 67 699 7547",
-  phoneNumber: "27676997547",
-  phoneDisplay: "+27 67 699 7547",
-  email: "rethabilegift240@gmail.com",
+  whatsappNumber: "27698456414",
+  whatsappDisplay: "+27 69 845 6414",
+  phoneNumber: "27698456414",
+  phoneDisplay: "+27 69 845 6414",
+  email: "tp.electro11@gmail.com",
 
   // Deployed Google Apps Script web app URL
   appsScriptUrl:
     "https://script.google.com/macros/s/AKfycbxFQADYxLMBJgFU-i9rMXbzzcgChTw06LCaEAXrEZ7zLOa9ge82K5Inkp_Q3B-Tuqh-Gg/exec",
 
   responseHoursText:
-    "WhatsApp and email enquiries are usually answered during business hours. Urgent support-related enquiries are prioritised as quickly as possible.",
+    "WhatsApp and email enquiries are usually answered during business hours. Urgent support-related enquiries are responded to as quickly as possible.",
 
   serviceAreasText:
-    "Pretoria, Gauteng, and selected surrounding areas. Residential, backup power, and commercial enquiries outside the core service area can still be discussed.",
+    "Pretoria, Gauteng, and selected surrounding areas. Residential, backup power, commercial, and electrical enquiries outside the core service area can still be discussed.",
 
   businessHours: [
     "Monday to Friday: 08:00 - 17:00",
@@ -114,7 +114,7 @@ export const contactQuickIntents: Array<{
 }> = [
   { intent: "residential_solar", label: "Home Solar" },
   { intent: "backup_power", label: "Backup Power" },
-  { intent: "commercial_solar", label: "Commercial" },
+  { intent: "commercial_solar", label: "Commercial Solar" },
   { intent: "maintenance_support", label: "Maintenance" },
   { intent: "coc_compliance", label: "COC / Compliance" },
 ];
@@ -124,42 +124,42 @@ export const contactServiceOptions = [
     value: "Residential Solar",
     label: "Residential Solar",
     description:
-      "Best for homeowners looking for lower electricity costs, backup during outages, or a complete solar-and-battery solution.",
+      "Best for homeowners who want lower electricity costs, improved backup during outages, or a full solar-and-battery solution.",
   },
   {
     value: "Commercial Solar",
     label: "Commercial Solar",
     description:
-      "Ideal for businesses that need cost control, operational continuity, and a more tailored energy setup.",
+      "Ideal for businesses that need better cost control, operational continuity, and a more tailored energy solution.",
   },
   {
     value: "Backup Power",
     label: "Backup Power",
     description:
-      "For essential power during load shedding or outages, including inverter, battery, and hybrid backup solutions.",
+      "For essential power during load shedding or outages, including inverter, battery, and hybrid backup systems.",
   },
   {
     value: "Battery Storage",
     label: "Battery Storage",
     description:
-      "For new or existing systems where you want improved backup capacity, night-time use, or storage upgrades.",
+      "For new or existing systems where you want stronger backup capacity, better night-time use, or storage upgrades.",
   },
   {
     value: "Maintenance / Support",
     label: "Maintenance / Support",
     description:
-      "For inspections, troubleshooting, repairs, system checks, and support for an existing installation.",
+      "For inspections, troubleshooting, repairs, performance checks, and support for an existing installation.",
   },
   {
     value: "COC / Compliance",
     label: "COC / Compliance",
     description:
-      "For certificate of compliance work, safety-related electrical checks, and compliance-driven installation support.",
+      "For certificate of compliance work, safety-related electrical checks, and compliance-focused installation support.",
   },
   {
     value: "General Electrical Work",
     label: "General Electrical Work",
     description:
-      "For broader electrical enquiries such as installations, rewiring, fault finding, upgrades, and related work.",
+      "For broader electrical enquiries such as installations, rewiring, fault finding, upgrades, and related electrical work.",
   },
 ] as const;

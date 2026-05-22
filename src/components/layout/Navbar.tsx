@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { mainNavigation, primaryCta } from "../../content/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 import MobileMenu from "./MobileMenu";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navbarQuoteHref = buildWhatsAppUrl("general_quote", {
     sourcePage: "global",
@@ -29,8 +32,19 @@ export default function Navbar() {
       }
     };
 
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 8);
+    };
+
+    handleScroll();
+
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -40,8 +54,12 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    closeMenu();
+  }, [pathname]);
+
   return (
-    <header className="site-header">
+    <header className={`site-header ${isScrolled ? "is-scrolled" : ""}`}>
       <div className="site-container navbar">
         <Link
           href="/"
@@ -60,11 +78,23 @@ export default function Navbar() {
         </Link>
 
         <nav className="nav-links" aria-label="Main navigation">
-          {mainNavigation.map((item) => (
-            <Link key={item.href} href={item.href} className="nav-link">
-              {item.label}
-            </Link>
-          ))}
+          {mainNavigation.map((item) => {
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname.startsWith(`${item.href}/`);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`nav-link ${isActive ? "is-active" : ""}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="nav-actions">

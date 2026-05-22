@@ -3,8 +3,11 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { mainNavigation, primaryCta } from "../../content/navigation";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildPhoneUrl } from "@/lib/contact";
+import { businessContact } from "@/content/contact";
 
 type MobileMenuProps = {
   isOpen: boolean;
@@ -15,7 +18,9 @@ export default function MobileMenu({
   isOpen,
   onClose,
 }: MobileMenuProps) {
+  const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const mobileMenuQuoteHref = buildWhatsAppUrl("general_quote", {
     sourcePage: "global",
@@ -26,8 +31,12 @@ export default function MobileMenu({
       "Hi TP Electro, I would like a quote for an electrical, solar, backup power, or battery solution.",
   });
 
+  const phoneHref = buildPhoneUrl();
+
   useEffect(() => {
     if (!isOpen) return;
+
+    const previousFocusedElement = document.activeElement as HTMLElement | null;
 
     const handlePointerDown = (event: MouseEvent | TouchEvent) => {
       const target = event.target as Node | null;
@@ -42,16 +51,28 @@ export default function MobileMenu({
       }
     };
 
+    const focusTimer = window.setTimeout(() => {
+      closeButtonRef.current?.focus();
+    }, 30);
+
     document.addEventListener("mousedown", handlePointerDown);
     document.addEventListener("touchstart", handlePointerDown);
     document.addEventListener("keydown", handleEscape);
 
     return () => {
+      window.clearTimeout(focusTimer);
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("touchstart", handlePointerDown);
       document.removeEventListener("keydown", handleEscape);
+      previousFocusedElement?.focus?.();
     };
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      onClose();
+    }
+  }, [pathname]);
 
   return (
     <div
@@ -66,8 +87,9 @@ export default function MobileMenu({
           role="dialog"
           aria-modal="true"
           aria-label="Mobile navigation"
+          tabIndex={-1}
         >
-          <div className="mobile-menu-brand-row">
+          <div className="mobile-menu-panel-top">
             <Link
               href="/"
               className="mobile-menu-brand"
@@ -83,23 +105,52 @@ export default function MobileMenu({
                 priority
               />
             </Link>
+
+            <button
+              ref={closeButtonRef}
+              type="button"
+              className="mobile-menu-close"
+              onClick={onClose}
+              aria-label="Close mobile menu"
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="mobile-menu-intro">
+            <p className="mobile-menu-eyebrow">Quick Navigation</p>
+            <p className="mobile-menu-text">
+              Choose a page below or contact TP Electro directly for the fastest
+              response.
+            </p>
           </div>
 
           <nav className="mobile-menu-nav" aria-label="Mobile navigation">
-            {mainNavigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="mobile-menu-link"
-                onClick={onClose}
-              >
-                <span>{item.label}</span>
-                <span className="mobile-menu-arrow" aria-hidden="true">
-                  ›
-                </span>
-              </Link>
-            ))}
+            {mainNavigation.map((item) => {
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname === item.href ||
+                    pathname.startsWith(`${item.href}/`);
 
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`mobile-menu-link ${isActive ? "is-active" : ""}`}
+                  onClick={onClose}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  <span>{item.label}</span>
+                  <span className="mobile-menu-arrow" aria-hidden="true">
+                    ›
+                  </span>
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="mobile-menu-support">
             <a
               href={mobileMenuQuoteHref}
               className="mobile-menu-cta"
@@ -109,7 +160,19 @@ export default function MobileMenu({
             >
               {primaryCta.label}
             </a>
-          </nav>
+
+            <a
+              href={phoneHref}
+              className="mobile-menu-secondary"
+              onClick={onClose}
+            >
+              Call {businessContact.phoneDisplay}
+            </a>
+
+            <p className="mobile-menu-support-note">
+              Fastest response on WhatsApp during business hours.
+            </p>
+          </div>
         </div>
       </div>
     </div>
