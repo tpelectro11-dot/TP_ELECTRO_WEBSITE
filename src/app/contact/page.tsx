@@ -38,6 +38,17 @@ const initialFormState: ContactFormState = {
   website: "",
 };
 
+const alternativePhoneNumbers = [
+  {
+    display: "078 739 4624",
+    href: "tel:+27787394624",
+  },
+  {
+    display: "068 529 5704",
+    href: "tel:+27685295704",
+  },
+];
+
 export default function ContactPage() {
   const [formData, setFormData] = useState<ContactFormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -164,6 +175,12 @@ export default function ContactPage() {
     fontSize: "0.94rem",
   };
 
+  const alternativePhoneListStyle: CSSProperties = {
+    marginTop: "0.55rem",
+    display: "grid",
+    gap: "0.35rem",
+  };
+
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -236,9 +253,8 @@ export default function ContactPage() {
                 maxWidth: "70ch",
               }}
             >
-              Whether you need a quote, installation, support, or guidance on
-              the right setup, use the enquiry form below and share the key
-              details. The more context you provide, the better we can help.
+              The more context you share about your property, energy needs, and
+              current setup, the better we can help.
             </p>
 
             <div style={quickActionRowStyle}>
@@ -551,8 +567,13 @@ export default function ContactPage() {
                       <ul style={infoListStyle}>
                         <li>Your location or project area</li>
                         <li>What you want powered or what work is needed</li>
-                        <li>Whether you already have solar, inverter, or battery equipment</li>
-                        <li>Any urgency, outage issues, faults, or support concerns</li>
+                        <li>
+                          Whether you already have solar, inverter, or battery
+                          equipment
+                        </li>
+                        <li>
+                          Any urgency, outage issues, faults, or support concerns
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -622,6 +643,23 @@ export default function ContactPage() {
                       <p>
                         <a href={phoneHref}>{businessContact.phoneDisplay}</a>
                       </p>
+
+                      <div style={alternativePhoneListStyle}>
+                        <strong
+                          style={{
+                            fontSize: "0.9rem",
+                            color: "var(--foreground)",
+                          }}
+                        >
+                          Alternative numbers
+                        </strong>
+
+                        {alternativePhoneNumbers.map((number) => (
+                          <p key={number.display} style={{ margin: 0 }}>
+                            <a href={number.href}>{number.display}</a>
+                          </p>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -716,6 +754,19 @@ export default function ContactPage() {
                       WhatsApp or a phone call is best for urgent needs, support
                       issues, or quick follow-up.
                     </span>
+                  </div>
+
+                  <div>
+                    <strong style={{ display: "block", marginBottom: "0.25rem" }}>
+                      Alternative contact numbers
+                    </strong>
+                    <div style={{ display: "grid", gap: "0.35rem" }}>
+                      {alternativePhoneNumbers.map((number) => (
+                        <a key={number.display} href={number.href}>
+                          {number.display}
+                        </a>
+                      ))}
+                    </div>
                   </div>
 
                   <div>
